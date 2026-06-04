@@ -1,0 +1,64 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "cwru": "https://case.edu/ns#",
+    "@vocab": "https://case.edu/ns#",
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "logo": "schema:logo",
+    "sameAs": "schema:sameAs",
+    "foundingDate": "schema:foundingDate",
+    "address": "schema:address",
+    "telephone": "schema:telephone",
+    "email": "schema:email",
+    "department": "schema:department",
+    "alumni": "schema:alumni",
+    "api": {
+      "@id": "cwru:api",
+      "@container": "@set"
+    },
+    "humanURL": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "baseURL": {
+      "@id": "cwru:baseURL",
+      "@type": "@id"
+    },
+    "tags": {
+      "@id": "schema:keywords",
+      "@container": "@set"
+    },
+    "sso": "cwru:SingleSignOn",
+    "library": "cwru:LibraryDiscovery",
+    "github": "cwru:SourceCodeRepository"
+  },
+  "@type": "schema:CollegeOrUniversity",
+  "name": "Case Western Reserve University",
+  "url": "https://case.edu/",
+  "sameAs": [
+    "https://github.com/cwru",
+    "https://www.linkedin.com/school/case-western-reserve-university/",
+    "https://en.wikipedia.org/wiki/Case_Western_Reserve_University"
+  ],
+  "description": "Case Western Reserve University (CWRU) is a private research university in Cleveland, Ohio, United States. CWRU does not operate a public, documented developer or API portal; its outward technical footprint consists of CAS-based single sign-on, OhioLINK/SearchOhio library discovery, and an archived institutional GitHub organization.",
+  "api": [
+    {
+      "@type": "cwru:SingleSignOn",
+      "name": "CWRU Single Sign-On (CAS)",
+      "humanURL": "https://login.case.edu/"
+    },
+    {
+      "@type": "cwru:LibraryDiscovery",
+      "name": "CWRU Libraries Discovery",
+      "humanURL": "https://researchguides.case.edu/discovery"
+    },
+    {
+      "@type": "cwru:SourceCodeRepository",
+      "name": "CWRU GitHub Web Tooling",
+      "humanURL": "https://github.com/cwru"
+    }
+  ]
+}
