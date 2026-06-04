@@ -1,0 +1,90 @@
+---
+aid: case-western-reserve-university
+name: Case Western Reserve University
+description: >-
+  Case Western Reserve University (CWRU) is a private research university in
+  Cleveland, Ohio, United States, ranked #259 in the QS World University
+  Rankings 2025. CWRU does not operate a public, documented developer or API
+  portal; its outward technical footprint consists of an (archived) institutional
+  GitHub organization focused on web content-template tooling, CAS-based single
+  sign-on for campus identity, and library discovery delivered through the
+  OhioLINK/SearchOhio consortium. Most institutional data is served internally
+  through Tableau dashboards rather than open APIs, so the entries below describe
+  confirmed public surfaces rather than openly documented programmatic endpoints.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/case-western-reserve-university/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - Cleveland
+  - Ohio
+  - United States
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: case-western-reserve-university:sso
+    name: CWRU Single Sign-On (CAS)
+    description: >-
+      Campus single sign-on service for Case Western Reserve University. The
+      login portal runs on CAS (Central Authentication Service), used to
+      authenticate CWRU Network IDs across university web resources. This is an
+      identity surface, not an openly documented developer API.
+    humanURL: https://login.case.edu/
+    tags: [ Authentication, SSO, CAS, Identity ]
+    properties:
+      - type: Documentation
+        url: https://login.case.edu/
+  - aid: case-western-reserve-university:libraries-discovery
+    name: CWRU Libraries Discovery
+    description: >-
+      Kelvin Smith Library's discovery search gateway providing a single
+      interface across the online catalog, licensed databases, and OhioLINK /
+      SearchOhio consortium holdings. Backed by a vendor discovery platform with
+      consortial harvesting; no public, documented patron-facing API is
+      advertised.
+    humanURL: https://researchguides.case.edu/discovery
+    tags: [ Library, Discovery, OhioLINK, Search ]
+    properties:
+      - type: Documentation
+        url: https://researchguides.case.edu/discovery
+  - aid: case-western-reserve-university:github
+    name: CWRU GitHub Web Tooling
+    description: >-
+      The official Case Western Reserve University GitHub organization hosts a
+      small set of (now archived) public repositories, primarily web
+      content-management template utilities such as T4Utils and Refresh
+      developer documentation for the university's TerminalFour CMS. This is
+      open source tooling rather than a hosted API.
+    humanURL: https://github.com/cwru
+    tags: [ Open Source, GitHub, CMS, Web ]
+    properties:
+      - type: Documentation
+        url: https://github.com/cwru
+      - type: GitHub
+        url: https://github.com/cwru
+common:
+  - type: Website
+    url: https://case.edu/
+  - type: GitHub
+    url: https://github.com/cwru
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/case-western-reserve-university/
+  - type: Authentication
+    url: https://login.case.edu/
+  - type: Plans
+    url: plans/case-western-reserve-university-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/case-western-reserve-university-rate-limits.yml
+  - type: FinOps
+    url: finops/case-western-reserve-university-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
