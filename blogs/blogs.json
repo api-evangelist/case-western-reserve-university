@@ -3,13 +3,12 @@
   "feeds": [
     {
       "source": "https://thedaily.case.edu/",
-      "feed_url": "https://thedaily.case.edu/feed/",
-      "title": "The Daily - Case Western Reserve University",
-      "saved": 0,
-      "method": "none",
-      "note": "apis.yml Blog entry points to local blogs.json; no fetchable blog feed configured"
+      "feed_url": "https://case.edu/news/rss.xml",
+      "title": "CWRU Newsroom - Case Western Reserve University",
+      "saved": 10,
+      "note": "thedaily.case.edu/feed/ now 301-redirects to case.edu/news/feed/ (404); working feed resolved at case.edu/news/rss.xml"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-07T00:00:00Z"
+  "post_count": 10,
+  "fetched": "2026-06-21T17:00:00Z"
 }
