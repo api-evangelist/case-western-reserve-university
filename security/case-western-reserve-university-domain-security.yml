@@ -1,0 +1,35 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: case.edu
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  6 13:59:05 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: login.case.edu
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Jan 16 23:59:59 2027 GMT
+  hsts: true
+  hsts_max_age: 15768000
+- host: researchguides.case.edu
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 15 12:15:22 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: case.edu
+  dnssec: false
+  caa:
+  - 0 issue "amazontrust.com"
+  - 0 issue "awstrust.com"
+  - 0 issue "amazonaws.com"
+  - 0 issue "digicert.com"
+  - 0 issue "emsign.com"
+  - 0 issue "godaddy.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
