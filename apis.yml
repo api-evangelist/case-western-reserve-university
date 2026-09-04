@@ -1,15 +1,23 @@
 aid: case-western-reserve-university
 name: Case Western Reserve University
+x-type: university
+x-category: Private Research University
 description: >-
-  Case Western Reserve University (CWRU) is a private research university in
-  Cleveland, Ohio, United States, ranked #259 in the QS World University
-  Rankings 2025. CWRU does not operate a public, documented developer or API
-  portal; its outward technical footprint consists of an (archived) institutional
-  GitHub organization focused on web content-template tooling, CAS-based single
-  sign-on for campus identity, and library discovery delivered through the
-  OhioLINK/SearchOhio consortium. Most institutional data is served internally
-  through Tableau dashboards rather than open APIs, so the entries below describe
-  confirmed public surfaces rather than openly documented programmatic endpoints.
+  Case Western Reserve University (CWRU) is a private research university in Cleveland, Ohio,
+  founded 1826 and a member of the Association of American Universities. It operates no public
+  developer portal and no public API program: api.case.edu, developer.case.edu and
+  developers.case.edu do not resolve, case.edu/llms.txt and /.well-known/security.txt both return
+  404, and its GitHub organization (github.com/cwru) holds six repositories of which four are
+  archived web-template tooling last touched in 2016-17. What CWRU does operate, and what this
+  profile records, is a small set of genuinely institution-run identity and harvesting surfaces —
+  a Shibboleth SAML 2.0 Identity Provider on login.case.edu registered in InCommon
+  (urn:mace:incommon:case.edu, scoped to case.edu and eight school subdomains), an Apereo CAS
+  single sign-on service on the same host, and an open OAI-PMH 2.0 provider for Scholarly Commons
+  at commons.case.edu — alongside tenancies it holds on other people's platforms (bepress Digital
+  Commons, Ex Libris Primo through the OhioLINK consortium, Tableau Server, Leepfrog CourseLeaf,
+  Microsoft Entra ID) and its registration in the Crossref and ROR registries. Every entry below
+  carries an x-operator saying who actually runs the thing described. No vendor contract is saved
+  under CWRU's name.
 type: Index
 deliveryModel:
   model: saas
@@ -34,7 +42,7 @@ accessModel:
     - plans
   generated: '2026-07-22'
   method: derived
-position: Consumer
+position: Consuming
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/case-western-reserve-university.png
 url: https://raw.githubusercontent.com/api-evangelist/case-western-reserve-university/refs/heads/main/apis.yml
@@ -42,25 +50,398 @@ tags:
   - Education
   - Higher Education
   - University
+  - Private Research University
+  - Association of American Universities
   - Research
+  - Identity Federation
+  - Shibboleth
+  - SAML
+  - OAI-PMH
+  - Research Repository
+  - Library
+  - Course Catalog
+  - Crossref
   - Cleveland
   - Ohio
   - United States
 created: '2026-06-03'
-modified: '2026-07-25'
+modified: '2026-09-01'
 specificationVersion: '0.23'
-apis: []
+apis:
+  - aid: case-western-reserve-university:shibboleth-idp
+    name: CWRU Shibboleth Identity Provider (SAML 2.0 metadata)
+    x-operator: institution
+    description: >-
+      CWRU's own Shibboleth Identity Provider, entityID urn:mace:incommon:case.edu. Every
+      SingleSignOnService binding in the production descriptor is on CWRU's own registrable
+      domain — https://login.case.edu/idp/profile/SAML2/Redirect/SSO, .../POST/SSO and
+      .../POST-SimpleSign/SSO — and the descriptor asserts nine shibmd:Scope values, all case.edu
+      subdomains (case.edu, artsci, dental, engineering, law, management, med, nursing, sass).
+      The metadata is distributed unauthenticated through the InCommon per-entity metadata service
+      (MDQ), registrationAuthority https://incommon.org, validUntil 2026-09-15. canvas.case.edu
+      was observed redirecting into this IdP. This is the strongest institution-operated,
+      machine-readable contract CWRU publishes. Caveat worth knowing: CWRU's own metadata URL
+      https://login.case.edu/idp/shibboleth answers 200 but serves a stale DEV descriptor
+      (entityID https://login-dev.case.edu/idp, "Still using old keypairs - fine for dev for now"),
+      so the MDQ copy is the authoritative one.
+    humanURL: https://case.edu/utech/departments/information-security
+    baseURL: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+    tags:
+      - Identity Federation
+      - Shibboleth
+      - SAML
+      - InCommon
+      - eduGAIN
+    properties:
+      - type: Authentication
+        url: authentication/case-western-reserve-university-authentication.yml
+      - type: Conformance
+        url: conformance/case-western-reserve-university-domain-standards.yml
+      - type: Website
+        url: https://login.case.edu/
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+        status: 200
+        content_type: application/samlmetadata+xml
+        bytes: 9543
+      method: probed
+  - aid: case-western-reserve-university:apereo-cas
+    name: CWRU Apereo CAS single sign-on (login.case.edu)
+    x-operator: institution
+    description: >-
+      CWRU runs an Apereo CAS deployment at login.case.edu as its campus single sign-on service.
+      The CAS 3.0 protocol validation endpoint /cas/p3/serviceValidate answers unauthenticated
+      with a well-formed cas:serviceResponse in the http://www.yale.edu/tp/cas namespace. It is an
+      institution-operated authentication service on the institution's own domain, not a data API:
+      a valid service ticket is required for any substantive response, and there is no public
+      client registration. The CAS OIDC module is deployed but refuses unauthenticated discovery
+      (/cas/oidc/.well-known/openid-configuration returns 401).
+    humanURL: https://login.case.edu/cas/login
+    baseURL: https://login.case.edu/cas/
+    tags:
+      - Single Sign-On
+      - CAS
+      - Apereo
+      - Identity
+    properties:
+      - type: Authentication
+        url: authentication/case-western-reserve-university-authentication.yml
+      - type: Website
+        url: https://login.case.edu/cas/login
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://login.case.edu/cas/p3/serviceValidate
+        status: 200
+        content_type: text/html;charset=UTF-8
+      method: probed
+  - aid: case-western-reserve-university:scholarly-commons-oai-pmh
+    name: Scholarly Commons @ CWRU — OAI-PMH 2.0 provider
+    x-operator: tenant
+    description: >-
+      An open OAI-PMH 2.0 metadata provider on CWRU's own host. Identify reports repositoryName
+      "Scholarly Commons @ Case Western Reserve University", repositoryIdentifier commons.case.edu,
+      earliestDatestamp 2000-01-19, sample identifier oai:commons.case.edu:bejte-1005.
+      ListMetadataFormats and ListSets both return 200, and ListSets enumerates CWRU-specific
+      collections (publication:begun, publication:baker-nord-works,
+      publication:beguncenter-reports and more). Recorded as `tenant` rather than `institution`:
+      the host, the repository name, the collections and the content are CWRU's, but the software
+      is bepress Digital Commons and the Identify adminEmail is dc-support@elsevier.com. Elsevier's
+      generic Digital Commons contract is deliberately NOT saved under CWRU's slug — the
+      harvestable OAI-PMH surface is the institutional fact, and it is real.
+    humanURL: https://commons.case.edu/
+    baseURL: https://commons.case.edu/do/oai/
+    tags:
+      - Research Repository
+      - OAI-PMH
+      - Open Access
+      - Digital Commons
+      - Metadata Harvesting
+    properties:
+      - type: Website
+        url: https://commons.case.edu/
+      - type: Conformance
+        url: conformance/case-western-reserve-university-domain-standards.yml
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://commons.case.edu/do/oai/?verb=Identify
+        status: 200
+        content_type: text/xml
+      vendor_signal: 'Identify adminEmail dc-support@elsevier.com; bepress Digital Commons /do/oai/ path'
+      method: probed
+  - aid: case-western-reserve-university:entra-id-tenant
+    name: CWRU Microsoft Entra ID tenant (OIDC + SAML metadata)
+    x-operator: federation
+    description: >-
+      CWRU's Microsoft Entra ID tenant, dc1c97ee-7a12-4624-9a01-9ad4f05d1311, resolved from the
+      case.edu domain hint. OpenID Connect discovery answers unauthenticated at
+      https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration, and the
+      WS-Federation/SAML metadata document at the tenant GUID returns 200 / 28,441 bytes. Recorded
+      as `federation` rather than discarded as a vendor host: the host and the protocol
+      implementation are Microsoft's, the tenant and the identities inside it are CWRU's. There is
+      no public client registration and no third-party developer access.
+    humanURL: https://case.edu/utech/
+    baseURL: https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration
+    tags:
+      - Identity Federation
+      - OpenID Connect
+      - SAML
+      - Entra ID
+    properties:
+      - type: OpenIDConnectDiscovery
+        url: https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration
+      - type: Authentication
+        url: authentication/case-western-reserve-university-authentication.yml
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration
+        status: 200
+        bytes: 1964
+      method: probed
+  - aid: case-western-reserve-university:crossref-member
+    name: Crossref member registration — Case Western Reserve University (member 7530)
+    x-operator: registry
+    description: >-
+      CWRU is a registered Crossref member, id 7530, primary-name "Case Western Reserve
+      University", holding six DOI prefixes (10.18062, 10.18581, 10.18582, 10.18695, 10.28953,
+      10.20411) and 475 deposited DOIs (260 current, 215 backfile). This is a membership fact
+      about the institution and is recorded per the registry rule. Crossref's own API contract
+      belongs to Crossref and is not saved here. Recorded alongside a deliberate negative: CWRU
+      has no DataCite membership — api.datacite.org returns meta.total 0 for both
+      providers?query=case+western and clients?query=case.edu.
+    humanURL: https://www.crossref.org/
+    baseURL: https://api.crossref.org/members/7530
+    tags:
+      - Crossref
+      - DOI
+      - Scholarly Publishing
+      - Registry
+    properties:
+      - type: Conformance
+        url: conformance/case-western-reserve-university-domain-standards.yml
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://api.crossref.org/members/7530
+        status: 200
+        content_type: application/json
+      method: probed
+  - aid: case-western-reserve-university:ror-record
+    name: ROR organization record — Case Western Reserve University (051fd9666)
+    x-operator: registry
+    description: >-
+      CWRU's Research Organization Registry record, https://ror.org/051fd9666, established 1826,
+      domain case.edu, located in Cleveland, Ohio, US. External identifiers cross-walk to Crossref
+      Funder IDs 100008136 / 100008564 / 100008565, GRID grid.67105.35, ISNI 0000 0001 2164 3847
+      and Wikidata Q1047060. A registration fact about the institution; ROR's own contract is
+      ROR's.
+    humanURL: https://ror.org/051fd9666
+    baseURL: https://api.ror.org/v2/organizations/051fd9666
+    tags:
+      - ROR
+      - Persistent Identifiers
+      - Registry
+    properties:
+      - type: Website
+        url: https://ror.org/051fd9666
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://api.ror.org/v2/organizations/051fd9666
+        status: 200
+        content_type: application/json
+      method: probed
+  - aid: case-western-reserve-university:tableau-server
+    name: CWRU Tableau Server deployment (data.case.edu)
+    x-operator: tenant
+    description: >-
+      CWRU's institutional analytics platform, hosted on its own domain at data.case.edu. The
+      unauthenticated Tableau REST serverInfo endpoint reports productVersion 2025.1.5 (build
+      20251.25.0724.1105), prepConductorVersion 2025.1.0 and restApiVersion 3.25. Everything else
+      requires a CWRU sign-in — the root URL returns only a Tableau vizportal SPA shell. Recorded
+      as `tenant`, not `institution`: the host and the dashboards are CWRU's, the REST contract is
+      Tableau's, and Tableau's generic specification is not saved here. This is where CWRU's
+      institutional data actually lives, which is why it is worth recording even though nothing
+      behind it is publicly callable.
+    humanURL: https://data.case.edu/
+    baseURL: https://data.case.edu/api/3.25/serverinfo
+    tags:
+      - Business Intelligence
+      - Analytics
+      - Tableau
+      - Institutional Data
+    properties:
+      - type: Website
+        url: https://data.case.edu/
+      - type: Authentication
+        url: authentication/case-western-reserve-university-authentication.yml
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://data.case.edu/api/3.19/serverinfo
+        status: 200
+        content_type: text/xml
+      vendor_signal: 'tsResponse xmlns="http://tableau.com/api"; Tableau Server 2025.1.5'
+      method: probed
+  - aid: case-western-reserve-university:primo-discovery-view
+    name: CWRU library discovery — Ex Libris Primo view 01OHIOLINK_CWRU:CWRUC
+    x-operator: tenant
+    description: >-
+      CWRU's library discovery layer is an Ex Libris Primo view operated through the OhioLINK
+      consortium. digital.case.edu — a CWRU-owned hostname — redirects to
+      ohiolink-cwru.primo.exlibrisgroup.com with the CWRU-specific view identifier
+      01OHIOLINK_CWRU:CWRUC and collection 81376980700008508. The named view is a real CWRU scope
+      on a shared vendor platform, so the tenancy is recorded; the Ex Libris Primo API contract is
+      Ex Libris's and is not saved here. No public, keyless Primo search API is exposed.
+    humanURL: https://researchguides.case.edu/discovery
+    baseURL: https://ohiolink-cwru.primo.exlibrisgroup.com/discovery/search?vid=01OHIOLINK_CWRU:CWRUC
+    tags:
+      - Library
+      - Discovery
+      - Ex Libris Primo
+      - OhioLINK
+    properties:
+      - type: Documentation
+        url: https://researchguides.case.edu/discovery
+      - type: Website
+        url: https://ohiolink-cwru.primo.exlibrisgroup.com/discovery/search?vid=01OHIOLINK_CWRU:CWRUC
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://digital.case.edu/
+        status: 200
+        redirected_to: https://ohiolink-cwru.primo.exlibrisgroup.com/discovery/collectionDiscovery?vid=01OHIOLINK_CWRU:CWRUC&collectionId=81376980700008508&lang=en
+      method: probed
+  - aid: case-western-reserve-university:courseleaf-bulletin
+    name: CWRU General Bulletin — Leepfrog CourseLeaf catalog (bulletin.case.edu)
+    x-operator: tenant
+    description: >-
+      The 2026-27 General Bulletin, CWRU's authoritative course catalog, runs on Leepfrog
+      CourseLeaf at bulletin.case.edu — a CWRU host, a vendor product. It publishes a sitemap
+      (https://bulletin.case.edu/sitemap.xml, 200, text/xml, 113,675 bytes) covering the catalog.
+      CourseLeaf's internal AJAX course endpoint /ribbit/index.cgi?page=getcourse.rjs&code=<CODE>
+      does return machine-readable XML course data, but bulletin.case.edu/robots.txt explicitly
+      Disallows /ribbit/, so it is recorded here as observed and deliberately NOT credited as a
+      published API surface. CWRU exposes no documented, supported course or timetable API; the
+      registrar's data is published as HTML reports at
+      case.edu/registrar/general/statistics-and-data and the student system is PeopleSoft at
+      sis.case.edu (/psp/P92SCWR), behind sign-on.
+    humanURL: https://case.edu/registrar/registration-classes/course-catalog-general-bulletin
+    baseURL: https://bulletin.case.edu/
+    tags:
+      - Course Catalog
+      - Registrar
+      - CourseLeaf
+      - Academic Programs
+    properties:
+      - type: Website
+        url: https://bulletin.case.edu/
+      - type: Documentation
+        url: https://case.edu/registrar/registration-classes/course-catalog-general-bulletin
+    x-evidence:
+      fetched: '2026-09-01'
+      probe:
+        url: https://bulletin.case.edu/sitemap.xml
+        status: 200
+        content_type: text/xml
+      robots_disallow: /ribbit/
+      method: probed
+x-coverage:
+  state: covered
+  reason: covered
+  detail: >-
+    CWRU publishes no public API program and no developer portal, and that absence was probed
+    rather than assumed: api.case.edu, developer.case.edu, developers.case.edu, classes.case.edu,
+    its.case.edu, maps.case.edu and status.case.edu all fail to resolve (curl exit 0/000), and
+    case.edu/llms.txt and case.edu/.well-known/security.txt both return 404. Nothing was blocked
+    to us except LinkedIn (HTTP 999, its standard bot challenge, not a dead page) — every other
+    surface was read directly. What IS here was found and verified: the InCommon-registered
+    Shibboleth IdP scoped to case.edu and eight school subdomains, an Apereo CAS SSO service on
+    the same host, an open OAI-PMH 2.0 provider for Scholarly Commons, a Microsoft Entra ID
+    tenant, a Crossref membership with six prefixes and 475 DOIs, and a ROR record. Four vendor
+    platforms carry CWRU tenancies (bepress Digital Commons, Ex Libris Primo via OhioLINK, Tableau
+    Server, Leepfrog CourseLeaf) and every one is recorded as a relationship with x-operator
+    tenant — no vendor contract is saved under CWRU's name. Two honest negatives are recorded
+    rather than hidden: CWRU has no DataCite membership at all, and its self-hosted SAML metadata
+    endpoint at login.case.edu/idp/shibboleth serves a stale dev descriptor. Marked `covered`
+    because the institution's real footprint is fully mapped, not because it is large.
+  generated: '2026-09-01'
+  method: probed
+  evidence:
+    - url: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+      status: 200
+    - url: https://login.case.edu/idp/shibboleth
+      status: 200
+    - url: https://login.case.edu/cas/p3/serviceValidate
+      status: 200
+    - url: https://login.case.edu/cas/oidc/.well-known/openid-configuration
+      status: 401
+    - url: https://commons.case.edu/do/oai/?verb=Identify
+      status: 200
+    - url: https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration
+      status: 200
+    - url: https://api.crossref.org/members/7530
+      status: 200
+    - url: https://api.ror.org/v2/organizations/051fd9666
+      status: 200
+    - url: https://data.case.edu/api/3.19/serverinfo
+      status: 200
+    - url: https://digital.case.edu/
+      status: 200
+    - url: https://bulletin.case.edu/sitemap.xml
+      status: 200
+    - url: https://api.datacite.org/clients?query=case.edu
+      status: 200
+    - url: https://case.edu/llms.txt
+      status: 404
+    - url: https://case.edu/.well-known/security.txt
+      status: 404
+    - url: https://api.case.edu/
+      status: 0
+    - url: https://developer.case.edu/
+      status: 0
+  checked: '2026-09-01'
 common:
-  - type: DomainSecurity
-    url: security/case-western-reserve-university-domain-security.yml
   - type: Website
     url: https://case.edu/
-  - type: GitHub
+  - type: Documentation
+    url: https://case.edu/utech/
+  - type: GitHubOrganization
     url: https://github.com/cwru
   - type: LinkedIn
     url: https://www.linkedin.com/school/case-western-reserve-university/
+  - type: Blog
+    url: https://case.edu/news/
+  - type: Support
+    url: https://cwru.teamdynamix.com/TDClient/126/Portal/Home/
+  - type: PrivacyPolicy
+    url: https://case.edu/utech/policies/legal-privacy-notice/
   - type: Authentication
     url: https://login.case.edu/
+  - type: IdentityFederation
+    url: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+  - type: ResearchRepository
+    url: https://commons.case.edu/
+  - type: LibraryCatalog
+    url: https://ohiolink-cwru.primo.exlibrisgroup.com/discovery/search?vid=01OHIOLINK_CWRU:CWRUC
+  - type: CourseCatalog
+    url: https://bulletin.case.edu/
+  - type: OpenData
+    url: https://case.edu/registrar/general/statistics-and-data
+  - type: ResearchComputing
+    url: https://case.edu/utech/departments/research-computing-and-infrastructure-services
+  - type: AIPolicy
+    url: https://case.edu/ai/governance-policies
+  - type: AITooling
+    url: https://case.edu/ai/tools-resources
+  - type: Conformance
+    url: conformance/case-western-reserve-university-domain-standards.yml
+  - type: DomainSecurity
+    url: security/case-western-reserve-university-domain-security.yml
   - type: Plans
     url: plans/case-western-reserve-university-plans-pricing.yml
   - type: RateLimits
