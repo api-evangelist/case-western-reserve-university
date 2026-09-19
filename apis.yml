@@ -121,6 +121,11 @@ apis:
     humanURL: https://login.case.edu/cas/login
     baseURL: https://login.case.edu/cas/
     tags:
+      - SSO
+      - CAS
+      - Apereo
+      - Identity
+    tags_raw:
       - Single Sign-On
       - CAS
       - Apereo
