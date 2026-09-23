@@ -1,0 +1,109 @@
+---
+# Education-regime domain-standard conformance for Case Western Reserve University.
+# Kin Score 0.12.0 `domain_standard_conformance` reads this from the CONTRACT/endpoint evidence,
+# never from a prose claim. REWARD-ONLY: only standards with a probed, dated location are listed.
+name: Case Western Reserve University — education domain standard conformance
+slug: case-western-reserve-university
+regime: education
+generated: '2026-09-01'
+method: probed
+source: https://case.edu/
+notes: >-
+  Every entry below was reached with a live HTTP probe on 2026-09-01 using a browser User-Agent.
+  Standards named in the education regime but NOT evidenced here are deliberately absent, and the
+  absences are as much a finding as the hits. `datacite` is absent because CWRU has no DataCite
+  membership at all: https://api.datacite.org/providers?query=case+western and
+  https://api.datacite.org/clients?query=case.edu both return meta.total = 0. `orcid` is absent
+  because 9,444 ORCID records assert a Case Western Reserve University affiliation
+  (https://pub.orcid.org/v3.0/expanded-search/?q=affiliation-org-name:"Case Western Reserve
+  University", num-found 9444) but that is a fact about researchers, not an institutional
+  membership surface CWRU operates. `scim`, `lti`, `oneroster`, `ed-fi`, `caliper` and `qti` are
+  absent because CWRU's Canvas LMS and PeopleSoft SIS (sis.case.edu, /psp/P92SCWR) expose no
+  publicly probeable conformance surface, and inventing one would credit the institution for an
+  integration nobody outside it can call.
+standards:
+  - standard: shibboleth
+    conformant: true
+    operator: institution
+    evidence:
+      url: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+      status: 200
+      content_type: application/samlmetadata+xml
+      location: >-
+        <EntityDescriptor entityID="urn:mace:incommon:case.edu"> with an <IDPSSODescriptor> and
+        nine <shibmd:Scope regexp="false"> extensions in the urn:mace:shibboleth:metadata:1.0
+        namespace: case.edu, artsci.case.edu, dental.case.edu, engineering.case.edu, law.case.edu,
+        management.case.edu, med.case.edu, nursing.case.edu, sass.case.edu.
+    detail: >-
+      CWRU operates its own Shibboleth Identity Provider. Every SingleSignOnService Location in
+      the production descriptor is on CWRU's own registrable domain
+      (https://login.case.edu/idp/profile/SAML2/Redirect/SSO, .../POST/SSO,
+      .../POST-SimpleSign/SSO), and the nine asserted scopes are all case.edu subdomains, so the
+      entity is unambiguously CWRU's rather than a shared or vendor entity. The descriptor is
+      distributed through the InCommon per-entity metadata service (MDQ), registrationAuthority
+      https://incommon.org, validUntil 2026-09-15. This is the strongest institution-operated,
+      machine-readable contract in this repository.
+  - standard: saml
+    conformant: true
+    operator: institution
+    evidence:
+      url: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+      status: 200
+      content_type: application/samlmetadata+xml
+      location: >-
+        xmlns="urn:oasis:names:tc:SAML:2.0:metadata";
+        protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"; 9,543 bytes.
+    detail: >-
+      SAML 2.0 metadata is published in two more places, both probed 200. CWRU self-hosts a
+      metadata endpoint at https://login.case.edu/idp/shibboleth (14,508 bytes,
+      application/xml) — but it serves a NON-PRODUCTION descriptor: entityID
+      "https://login-dev.case.edu/idp", every binding Location rebased onto login-dev.case.edu,
+      and an XML comment reading "Still using old keypairs - fine for dev for now". The
+      authoritative production descriptor is the InCommon MDQ one above; the self-hosted URL has
+      drifted to a dev entity and is recorded here as an observed defect, not as a second
+      surface. Separately, CWRU's Microsoft Entra ID tenant
+      (dc1c97ee-7a12-4624-9a01-9ad4f05d1311, resolved from the case.edu domain hint) publishes
+      WS-Federation/SAML metadata at
+      https://login.microsoftonline.com/dc1c97ee-7a12-4624-9a01-9ad4f05d1311/federationmetadata/2007-06/federationmetadata.xml
+      — probed 200, 28,441 bytes. That host and that contract are Microsoft's; the tenant is
+      CWRU's.
+  - standard: oai-pmh
+    conformant: true
+    operator: tenant
+    evidence:
+      url: https://commons.case.edu/do/oai/?verb=Identify
+      status: 200
+      content_type: text/xml
+      location: >-
+        <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"><Identify>
+        <repositoryName>Scholarly Commons @ Case Western Reserve University</repositoryName>
+        <baseURL>http://commons.case.edu/do/oai/</baseURL>
+        <protocolVersion>2.0</protocolVersion>
+        <adminEmail>dc-support@elsevier.com</adminEmail>
+        <earliestDatestamp>2000-01-19T00:00:00Z</earliestDatestamp>
+        <oai-identifier><repositoryIdentifier>commons.case.edu</repositoryIdentifier>
+        <sampleIdentifier>oai:commons.case.edu:bejte-1005</sampleIdentifier></oai-identifier>
+    detail: >-
+      A fully functional OAI-PMH 2.0 provider on CWRU's own host. Identify, ListMetadataFormats
+      (simple-dublin-core, oai_dc and further prefixes) and ListSets all return 200; ListSets
+      enumerates CWRU-specific collections (publication:begun, publication:baker-nord-works,
+      publication:beguncenter-reports and more). Operator is `tenant`, not `institution`: the
+      repository name, the host, the collections and the content are CWRU's, but the software is
+      bepress Digital Commons and the administrative contact is dc-support@elsevier.com. The
+      protocol conformance is nevertheless real and publicly harvestable, which is exactly what
+      this check measures. Elsevier's own Digital Commons contract is NOT saved here.
+  - standard: crossref
+    conformant: true
+    operator: registry
+    evidence:
+      url: https://api.crossref.org/members/7530
+      status: 200
+      content_type: application/json
+      location: >-
+        message.id = 7530; message.primary-name = "Case Western Reserve University";
+        message.prefixes = ["10.18062", "10.18581", "10.18582", "10.18695", "10.28953",
+        "10.20411"]; message.counts = {current-dois 260, backfile-dois 215, total-dois 475}.
+    detail: >-
+      CWRU is a registered Crossref member with six DOI prefixes and 475 deposited DOIs. This is
+      a membership fact about the institution, recorded per the registry rule; Crossref's own
+      contract belongs to Crossref and is not saved here.

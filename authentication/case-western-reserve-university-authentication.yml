@@ -1,0 +1,142 @@
+---
+# How access to Case Western Reserve University's programmable surfaces is actually established.
+# NOT an OAuth developer program: CWRU publishes no API keys and no third-party client registration.
+name: Case Western Reserve University — authentication and federated identity
+slug: case-western-reserve-university
+generated: '2026-09-01'
+method: probed
+source: https://login.case.edu/
+summary: >-
+  CWRU has no public developer authentication surface — no API key issuance, no third-party OAuth
+  client registration, no documented token endpoint for outside developers. What it does operate
+  is institutional identity for its own members, in three stacks. Two of them (Apereo CAS and the
+  Shibboleth IdP) run on CWRU's own registrable domain at login.case.edu; the third is a Microsoft
+  Entra ID tenant on Microsoft's host. All three answer unauthenticated metadata or protocol
+  requests, which is what makes them readable at all.
+mechanisms:
+  - id: shibboleth-idp
+    type: saml2-idp
+    operator: institution
+    entity_id: urn:mace:incommon:case.edu
+    metadata_url: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+    sso_endpoints:
+      - https://login.case.edu/idp/profile/SAML2/Redirect/SSO
+      - https://login.case.edu/idp/profile/SAML2/POST/SSO
+      - https://login.case.edu/idp/profile/SAML2/POST-SimpleSign/SSO
+    scopes_asserted:
+      - case.edu
+      - artsci.case.edu
+      - dental.case.edu
+      - engineering.case.edu
+      - law.case.edu
+      - management.case.edu
+      - med.case.edu
+      - nursing.case.edu
+      - sass.case.edu
+    federation: InCommon (registrationAuthority https://incommon.org), exported to eduGAIN
+    audience: CWRU staff, students and federated service providers
+    public_client_registration: false
+    probed:
+      status: 200
+      content_type: application/samlmetadata+xml
+      bytes: 9543
+      valid_until: '2026-09-15T19:37:27.093Z'
+      date: '2026-09-01'
+    method: probed
+    source: https://mdq.incommon.org/entities/urn%3Amace%3Aincommon%3Acase.edu
+    note: >-
+      CWRU also self-hosts a metadata endpoint at https://login.case.edu/idp/shibboleth (200,
+      application/xml, 14,508 bytes) but it serves a NON-PRODUCTION descriptor — entityID
+      "https://login-dev.case.edu/idp", all bindings rebased onto login-dev.case.edu, with an XML
+      comment stating "Still using old keypairs - fine for dev for now". Consumers should take the
+      InCommon MDQ copy as authoritative. Recorded as an observed defect on CWRU's surface, not as
+      a second IdP.
+  - id: apereo-cas
+    type: cas-protocol
+    operator: institution
+    login_url: https://login.case.edu/cas/login
+    validate_endpoints:
+      - https://login.case.edu/cas/p3/serviceValidate
+    audience: CWRU applications integrating campus single sign-on
+    public_client_registration: false
+    probed:
+      url: https://login.case.edu/cas/p3/serviceValidate
+      status: 200
+      content_type: text/html;charset=UTF-8
+      body: >-
+        <cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+        <cas:authenticationFailure code="INVALID_REQUEST"></cas:authenticationFailure>
+        </cas:serviceResponse>
+      date: '2026-09-01'
+    method: probed
+    source: https://login.case.edu/cas/login
+    note: >-
+      An Apereo CAS deployment run by CWRU on its own domain. The CAS 3.0 protocol response
+      confirms the service is live and speaking the protocol; a valid ticket is required for any
+      real response, so this is an institution-operated authentication surface rather than a data
+      API. https://case.edu/ redirects to it, and https://canvas.case.edu/ redirects into
+      https://login.case.edu/idp/profile/SAML2/Redirect/SSO.
+  - id: entra-id-tenant
+    type: oidc-and-saml2
+    operator: federation
+    tenant_id: dc1c97ee-7a12-4624-9a01-9ad4f05d1311
+    issuer: https://login.microsoftonline.com/dc1c97ee-7a12-4624-9a01-9ad4f05d1311/v2.0
+    discovery_url: https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration
+    saml_metadata_url: https://login.microsoftonline.com/dc1c97ee-7a12-4624-9a01-9ad4f05d1311/federationmetadata/2007-06/federationmetadata.xml
+    authorization_endpoint: https://login.microsoftonline.com/dc1c97ee-7a12-4624-9a01-9ad4f05d1311/oauth2/v2.0/authorize
+    token_endpoint: https://login.microsoftonline.com/dc1c97ee-7a12-4624-9a01-9ad4f05d1311/oauth2/v2.0/token
+    jwks_uri: https://login.microsoftonline.com/dc1c97ee-7a12-4624-9a01-9ad4f05d1311/discovery/v2.0/keys
+    audience: CWRU accounts on Microsoft 365 and Entra-integrated internal systems
+    public_client_registration: false
+    probed:
+      status: 200
+      bytes: 1964
+      tenant_region_scope: NA
+      date: '2026-09-01'
+    method: probed
+    source: https://login.microsoftonline.com/case.edu/v2.0/.well-known/openid-configuration
+    note: >-
+      login.microsoftonline.com is Microsoft's host and Microsoft's contract. The TENANT is
+      CWRU's, resolved from the case.edu domain hint, which is why it is recorded as `federation`
+      rather than discarded as a vendor host.
+unauthenticated_surfaces:
+  - url: https://commons.case.edu/do/oai/?verb=Identify
+    detail: OAI-PMH harvesting of Scholarly Commons is open; no credential required.
+  - url: https://data.case.edu/api/3.19/serverinfo
+    detail: >-
+      Tableau Server REST serverInfo is unauthenticated by design and reports productVersion
+      2025.1.5, restApiVersion 3.25. Every other Tableau REST route requires a sign-in token.
+  - url: https://api.crossref.org/members/7530
+    detail: Crossref membership record; public.
+  - url: https://api.ror.org/v2/organizations/051fd9666
+    detail: ROR organization record; public.
+gated_surfaces:
+  - url: https://login.case.edu/cas/oidc/.well-known/openid-configuration
+    status: 401
+    detail: >-
+      The CAS OIDC module answers but refuses an unauthenticated discovery read (401, 158 bytes).
+      Present but not publicly readable — recorded, not credited.
+  - url: https://login.case.edu/idp/status
+    status: 403
+    detail: Shibboleth IdP status page is IP-restricted; an access control, not a dead host.
+  - url: https://data.case.edu/
+    status: 200
+    detail: >-
+      Tableau Server SPA shell (vizportal, build 2025_1_34_2g69rzf1wzu). A 200 with no content —
+      every dashboard behind it requires CWRU sign-in.
+absent_surfaces:
+  - url: https://api.case.edu/
+    status: 0
+    detail: Does not resolve.
+  - url: https://developer.case.edu/
+    status: 0
+    detail: Does not resolve.
+  - url: https://developers.case.edu/
+    status: 0
+    detail: Does not resolve.
+  - url: https://case.edu/llms.txt
+    status: 404
+    detail: No agent-facing site description.
+  - url: https://case.edu/.well-known/security.txt
+    status: 404
+    detail: No RFC 9116 security contact document.
