@@ -1,4 +1,4 @@
-# Case Western Reserve University (case-western-reserve-university)
+# Case Western Reserve University
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,56 +64,121 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Case Western Reserve University (CWRU) is a private research university in Cleveland, Ohio, ranked #259 in the QS World University Rankings 2025. This repository catalogs CWRU's confirmed public developer/API footprint as an APIs.json index. CWRU does not publish a public developer or API portal; the confirmed surfaces are a CAS single sign-on portal, library discovery via the OhioLINK consortium, and an archived institutional GitHub organization of web/CMS tooling.
+Case Western Reserve University (CWRU) is a private research university in Cleveland, Ohio, founded 1826 and a member of the Association of American Universities. It operates no public developer portal and no public API program: api.case.edu, developer.case.edu and developers.case.edu do not resolve, case.edu/llms.txt and /.well-known/security.txt both return 404, and its GitHub organization (github.com/cwru) holds six repositories of which four are archived web-template tooling last touched in 2016-17. What CWRU does operate, and what this profile records, is a small set of genuinely institution-run identity and harvesting surfaces — a Shibboleth SAML 2.0 Identity Provider on login.case.edu registered in InCommon (urn:mace:incommon:case.edu, scoped to case.edu and eight school subdomains), an Apereo CAS single sign-on service on the same host, and an open OAI-PMH 2.0 provider for Scholarly Commons at commons.case.edu — alongside tenancies it holds on other people's platforms (bepress Digital Commons, Ex Libris Primo through the OhioLINK consortium, Tableau Server, Leepfrog CourseLeaf, Microsoft Entra ID) and its registration in the Crossref and ROR registries. Every entry below carries an x-operator saying who actually runs the thing described. No vendor contract is saved under CWRU's name.
 
-- APIs.json: https://raw.githubusercontent.com/api-evangelist/case-western-reserve-university/refs/heads/main/apis.yml
-- Run with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=case-western-reserve-university-api-evangelist&utm_content=repo
+**Areas:** Education · Higher Education · University · Private Research University · Association of American Universities · Research · Identity Federation · Shibboleth · SAML · OAI-PMH · Research Repository · Library
 
-## Type
+## Case Western Reserve University on APIs.io
 
-Index / Consumer / 3rd-Party
+Everything profiled for Case Western Reserve University is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/case-western-reserve-university/](https://apis.io/providers/case-western-reserve-university/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (9)
 
-Education, Higher Education, University, Research, Cleveland, Ohio, United States
+- [CWRU Shibboleth Identity Provider (SAML 2.0 metadata)](https://apis.io/apis/case-western-reserve-university/shibboleth-idp/) — CWRU's own Shibboleth Identity Provider, entityID urn:mace:incommon:case.edu. Every SingleSignOnService binding in the production descriptor is on CWRU's…
+- [CWRU Apereo CAS single sign-on (login.case.edu)](https://apis.io/apis/case-western-reserve-university/apereo-cas/) — CWRU runs an Apereo CAS deployment at login.case.edu as its campus single sign-on service. The CAS 3.0 protocol validation endpoint /cas/p3/serviceValidate…
+- [Scholarly Commons @ CWRU — OAI-PMH 2.0 provider](https://apis.io/apis/case-western-reserve-university/scholarly-commons-oai-pmh/) — An open OAI-PMH 2.0 metadata provider on CWRU's own host. Identify reports repositoryName "Scholarly Commons @ Case Western Reserve University",…
+- [CWRU Microsoft Entra ID tenant (OIDC + SAML metadata)](https://apis.io/apis/case-western-reserve-university/entra-id-tenant/) — CWRU's Microsoft Entra ID tenant, dc1c97ee-7a12-4624-9a01-9ad4f05d1311, resolved from the case.edu domain hint. OpenID Connect discovery answers…
+- [Crossref member registration — Case Western Reserve University (member 7530)](https://apis.io/apis/case-western-reserve-university/crossref-member/) — CWRU is a registered Crossref member, id 7530, primary-name "Case Western Reserve University", holding six DOI prefixes (10.18062, 10.18581, 10.18582,…
+- [ROR organization record — Case Western Reserve University (051fd9666)](https://apis.io/apis/case-western-reserve-university/ror-record/) — CWRU's Research Organization Registry record, https://ror.org/051fd9666, established 1826, domain case.edu, located in Cleveland, Ohio, US. External…
+- [CWRU Tableau Server deployment (data.case.edu)](https://apis.io/apis/case-western-reserve-university/tableau-server/) — CWRU's institutional analytics platform, hosted on its own domain at data.case.edu. The unauthenticated Tableau REST serverInfo endpoint reports…
+- [CWRU library discovery — Ex Libris Primo view 01OHIOLINK_CWRU:CWRUC](https://apis.io/apis/case-western-reserve-university/primo-discovery-view/) — CWRU's library discovery layer is an Ex Libris Primo view operated through the OhioLINK consortium. digital.case.edu — a CWRU-owned hostname — redirects to…
+- [CWRU General Bulletin — Leepfrog CourseLeaf catalog (bulletin.case.edu)](https://apis.io/apis/case-western-reserve-university/courseleaf-bulletin/) — The 2026-27 General Bulletin, CWRU's authoritative course catalog, runs on Leepfrog CourseLeaf at bulletin.case.edu — a CWRU host, a vendor product. It…
 
-## APIs
+### Published properties
 
-- **CWRU Single Sign-On (CAS)** — Campus CAS single sign-on for CWRU Network IDs. Docs: https://login.case.edu/
-- **CWRU Libraries Discovery** — Kelvin Smith Library discovery gateway across the catalog, licensed databases, and OhioLINK/SearchOhio holdings. Docs: https://researchguides.case.edu/discovery
-- **CWRU GitHub Web Tooling** — Official (archived) GitHub org with web/CMS template utilities (T4Utils, Refresh docs). Docs: https://github.com/cwru
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-No publicly documented programmatic API endpoints, OpenAPI specs, or sign-up flows were found.
+#### JSON-LD (1)
 
-## Plans
+Linked-data contexts for the provider's vocabulary.
 
-See [plans/case-western-reserve-university-plans-pricing.yml](plans/case-western-reserve-university-plans-pricing.yml)
+- [Case Western Reserve University Context](https://apis.io/jsonld/case-western-reserve-university/case-western-reserve-university-context/)
 
-## Rate Limits
+#### Security (2)
 
-See [rate-limits/case-western-reserve-university-rate-limits.yml](rate-limits/case-western-reserve-university-rate-limits.yml)
+Authentication, trust centre, and vulnerability disclosure.
 
-## FinOps
+- [Case Western Reserve University Authentication](https://apis.io/security/case-western-reserve-university/case-western-reserve-university-authentication/)
+- [Case Western Reserve University Domain Security](https://apis.io/security/case-western-reserve-university/case-western-reserve-university-domain-security/)
 
-See [finops/case-western-reserve-university-finops.yml](finops/case-western-reserve-university-finops.yml)
+#### Plans and pricing (1)
 
-## Timestamps
+Published plans, tiers and prices.
 
-- Created: 2026-06-03
-- Modified: 2026-06-03
+- [Case Western Reserve University Plans Pricing](https://apis.io/plans/case-western-reserve-university/case-western-reserve-university-plans-pricing/)
 
-## Common Properties
+#### Rate limits (1)
 
-- Website: https://case.edu/
-- GitHub: https://github.com/cwru
-- LinkedIn: https://www.linkedin.com/school/case-western-reserve-university/
-- Authentication: https://login.case.edu/
-- Plans, Rate Limits, FinOps, and Review pointers are included in `apis.yml`.
+Published request limits.
 
-## Notes
+- [Case Western Reserve University Rate Limits](https://apis.io/rate-limits/case-western-reserve-university/case-western-reserve-university-rate-limits/)
 
-All entries reflect surfaces verified live on 2026-06-03 (HTTP 200). No public developer portal, OpenAPI definitions, or programmatic endpoints were located; institutional data is largely internal and delivered via Tableau. No endpoints were fabricated. The CWRU GitHub organization's public repositories are archived (last meaningful activity circa 2020).
+#### FinOps (1)
 
-## Maintainers
+What the API costs to run, by operation.
 
-- Kin Lane — kin@apievangelist.com
+- [Case Western Reserve University Finops](https://apis.io/finops/case-western-reserve-university/case-western-reserve-university-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://case.edu/)
+- [Documentation](https://case.edu/utech/)
+- [Support](https://cwru.teamdynamix.com/TDClient/126/Portal/Home/)
+- [Blog](https://case.edu/news/)
+- [Privacy policy](https://case.edu/utech/policies/legal-privacy-notice/)
+- [GitHub](https://github.com/cwru)
+
+## API Evangelist rating
+
+**Kin Score 21.0** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 14.3 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 28.6 |
+| Access clarity | 15.8 |
+
+**Agent readiness 3.1** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.6** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/case-western-reserve-university/](https://apis.io/providers/case-western-reserve-university/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Case Western Reserve University: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/case-western-reserve-university/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
